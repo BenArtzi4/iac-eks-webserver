@@ -1,11 +1,10 @@
 ############################################
-# vpc.tf
 # Creates VPC, Subnets, and Basic Networking
 ############################################
 
 # Create the VPC
 resource "aws_vpc" "this" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_block
 
   tags = {
     Name = "my-eks-vpc"
@@ -40,8 +39,8 @@ resource "aws_route" "public_internet_access" {
 # Create two public subnets across different availability zones
 resource "aws_subnet" "public_subnet_1" {
   vpc_id                  = aws_vpc.this.id
-  cidr_block             = "10.0.1.0/24"
-  availability_zone       = "us-east-1a"
+  cidr_block             = var.public_subnet_1_cidr
+  availability_zone       = var.availability_zones[0]
   map_public_ip_on_launch = true
   tags = {
     Name = "my-eks-public-subnet-1"
@@ -50,8 +49,8 @@ resource "aws_subnet" "public_subnet_1" {
 
 resource "aws_subnet" "public_subnet_2" {
   vpc_id                  = aws_vpc.this.id
-  cidr_block             = "10.0.2.0/24"
-  availability_zone       = "us-east-1b"
+  cidr_block             = var.public_subnet_2_cidr
+  availability_zone       = var.availability_zones[1]
   map_public_ip_on_launch = true
   tags = {
     Name = "my-eks-public-subnet-2"
