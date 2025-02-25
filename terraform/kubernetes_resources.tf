@@ -2,6 +2,11 @@
 # Kubernetes Resources for Web Server Deployment
 ##################################################
 
+# Retrieve EKS cluster authentication details
+data "aws_eks_cluster_auth" "this" {
+  name = aws_eks_cluster.this.name
+}
+
 provider "kubernetes" {
   host                   = aws_eks_cluster.this.endpoint
   token                  = data.aws_eks_cluster_auth.this.token
@@ -15,7 +20,7 @@ resource "kubernetes_namespace" "web" {
   }
 }
 
-# Defines a Kubernetes Deployment and deploys multiple replicas (pods) of the web server
+# Service Account for Kubernetes
 resource "kubernetes_service_account" "web" {
   metadata {
     name      = "web-sa"
@@ -23,7 +28,7 @@ resource "kubernetes_service_account" "web" {
   }
 }
 
-# Runs 2 replicas of the web server, defines pods, assign the Kubernetes Service to the pods and use Docker iamge
+# Runs 2 replicas of the web server, defines pods, assigns the Kubernetes Service to the pods, and uses Docker image
 resource "kubernetes_deployment" "web" {
   metadata {
     name      = "webserver"
@@ -53,7 +58,7 @@ resource "kubernetes_deployment" "web" {
 
         container {
           name  = "webserver"
-          image = "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-web-app:latest"  # Replace with your ECR repository
+          image = var.webserver_image
           port {
             container_port = 3000
           }
@@ -84,7 +89,7 @@ resource "kubernetes_service" "web" {
       port        = 80
       target_port = 3000
     }
-    # Expose web server using LoadBalancer service"
-    type = "LoadBalancer"
+    
+    type = "LoadBalancer"  # Expose web server using LoadBalancer service
   }
 }
