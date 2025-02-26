@@ -40,7 +40,7 @@ jobs:
 
       - name: Update Kubernetes Deployment in Git
         run: |
-          sed -i 's|image:.*|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|g' kubernetes/deployment.yaml
+          sed -i 's|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|g' kubernetes/deployment.yaml
           git config --global user.email "ci-bot@github.com"
           git config --global user.name "CI Bot"
           git add kubernetes/deployment.yaml
