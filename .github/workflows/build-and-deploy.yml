@@ -40,9 +40,20 @@ jobs:
 
       - name: Update Kubernetes Deployment in Git
         run: |
-          sed -i 's|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|g' kubernetes/deployment.yaml
+          sed -i 's|image: .*|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|g' kubernetes/deployment.yaml
+
+          # Check if there are changes to commit
+          git diff --exit-code kubernetes/deployment.yaml || echo "Changes detected in deployment.yaml"
+
+          # Configure Git user for commit
           git config --global user.email "ci-bot@github.com"
           git config --global user.name "CI Bot"
+
+          # Add changes to the staging area
           git add kubernetes/deployment.yaml
-          git commit -m "Update deployment image to latest"
+
+          # Commit changes if there are any, else create an empty commit to keep the flow green
+          git diff --quiet kubernetes/deployment.yaml || git commit -m "Update deployment image to latest"
+          git commit --allow-empty -m "No changes in deployment.yaml, workflow completed"
+
           git push
