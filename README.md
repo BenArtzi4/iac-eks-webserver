@@ -40,10 +40,21 @@ The GitHub Actions workflow automates the build, push, and deployment process fo
     - Deploy:
         - Update Kubernetes Deployment: The pipeline updates the deployment.yaml file in the repository and syncs the changes to Kubernetes using ArgoCD.
 
-## 5. GitOps Using ArgoCD
+## 5. ArgoCD Integration
 - ArgoCD is used to manage the Kubernetes deployment in a GitOps fashion.
 - The ArgoCD Application is defined in argocd-app.yaml. It monitors the kubernetes directory in the GitHub repository and ensures that the Kubernetes cluster is always synchronized with the declared state.
 - ArgoCD automatically synchronizes the web server deployment and updates the image when changes are pushed to the main branch of the repository.
+
+![image](https://github.com/user-attachments/assets/16f9ef41-4261-415b-836f-72192c4e3fba)
+- **webserver-app**: ArgoCD Application - Manages the entire deployment of your web server application
+- **webserver-service**: Kubernetes Service - Exposes the web server to the outside world
+- **web-sa**: ServiceAccount - Used by Kubernetes to manage the identity for processes running inside the pod
+- **webserver**: Deployment - Kubernetes resource that defines how to run and manage the web server application
+- **webserver-service**: Endpoints - Connects the Service to the actual running pods. It keeps track of the IP addresses of the pods that the Service should route traffic to
+- **webserver-service-t4bl6**: EndpointSlice - Divides the list of endpoints into smaller, more manageable slices, making it easier to scale and more efficient to manage.
+- **webserver-555cf55575 & webserver-59f77fb4b5**: ReplicaSet - Ensures that a specified number of identical pods are running at any time
+- **webserver-555cf55575-rrnbz & webserver-555cf55575-zm24x**: Pod - Running the web server container
+
 
 # 6. Exposing the Web Server
 - The web server is exposed to the internet using a LoadBalancer Service. Once the deployment is completed and the service is available, you can access the web server by visiting the URL provided by the LoadBalancer.
