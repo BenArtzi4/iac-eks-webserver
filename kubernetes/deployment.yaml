@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver
+  namespace: webserver
+  labels:
+    app: webserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      serviceAccountName: web-sa
+      containers:
+        - name: webserver
+          image: <AWS_ECR_REPO>:latest # TODO: add the right repo
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
