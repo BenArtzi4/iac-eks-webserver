@@ -21,15 +21,15 @@ jobs:
 
       - name: Login to Amazon ECR
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS_ECR_REPOSITORY>
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REPOSITORY }}
 
       - name: Build Docker Image
         run: |
-          docker build -t <AWS_ECR_REPOSITORY>:latest ./webserver
+          docker build -t ${{ secrets.AWS_ECR_REPOSITORY }}:latest ./webserver
 
       - name: Push Docker Image to Amazon ECR
         run: |
-          docker push <AWS_ECR_REPOSITORY>:latest
+          docker push ${{ secrets.AWS_ECR_REPOSITORY }}:latest
 
   update-gitops:
     needs: build-push
@@ -40,7 +40,7 @@ jobs:
 
       - name: Update Kubernetes Deployment in Git
         run: |
-          sed -i 's|<AWS_ECR_REPOSITORY>:.*|<AWS_ECR_REPOSITORY>:latest|g' kubernetes/deployment.yaml
+          sed -i 's|image:.*|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|g' kubernetes/deployment.yaml
           git config --global user.email "ci-bot@github.com"
           git config --global user.name "CI Bot"
           git add kubernetes/deployment.yaml
