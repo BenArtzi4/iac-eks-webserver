@@ -51,3 +51,5 @@ jobs:
           git add kubernetes/deployment.yaml
           git diff --quiet kubernetes/deployment.yaml || git commit -m "Update deployment image to latest"
           git push https://github.com/${{ github.repository }} HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
