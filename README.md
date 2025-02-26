@@ -74,3 +74,48 @@ Webhttp://a15f13353389c4bc2aeb8083a8b7c8ba-230519834.us-east-1.elb.amazonaws.com
 
 [URL](http://a15f13353389c4bc2aeb8083a8b7c8ba-230519834.us-east-1.elb.amazonaws.com/)
 
+
+# How to Replicate and Run the Project
+## Prerequisites
+Before getting started, make sure you have the following tools installed:
+
+Git: Version control system for cloning the repository.
+Docker: To build and manage containers.
+Terraform: To create and manage AWS resources.
+kubectl: To manage Kubernetes clusters.
+AWS CLI: To interact with AWS services from the command line.
+GitHub Actions (for CI/CD): This is handled by the GitHub Actions workflow.
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/BenArtzi4/iac-eks-webserver.git
+   cd iac-eks-webserver
+   ```
+
+2. Set up AWS CLI: Ensure your AWS CLI is configured with the correct credentials:
+   ```
+   aws configure
+   ```
+3. Set up ECR (Elastic Container Registry) - Create a repository on Amazon ECR
+   ```
+   aws ecr create-repository --repository-name webserver
+   ```
+4. Create the EKS (Amazon Elastic Kubernetes) Cluster
+   ```
+   terraform init
+   terraform apply -auto-approve
+   ```
+5. Deploy the Web Server using ArgoCD: After the EKS cluster is ready, the Kubernetes deployment will be updated automatically when new Docker images are pushed to ECR
+
+6. Verify the deployment verify the service is running using `kubectl`:
+   ```
+   kubectl get svc -n webserver
+   ```
+
+# Architecture Diagram
+
+![image](https://github.com/user-attachments/assets/72aa1a13-a010-4dc4-8cea-91b0d1322d18)
+
+
+
+
