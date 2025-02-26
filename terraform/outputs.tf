@@ -23,6 +23,5 @@ output "node_group_name" {
 }
 
 output "webserver_lb_dns" {
-  description = "LoadBalancer DNS"
-  value       = try(kubernetes_service.web.status[0].load_balancer[0].ingress[0].hostname, "Pending")
+  value = "Run: kubectl get svc webserver-service -n webserver -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
 }
