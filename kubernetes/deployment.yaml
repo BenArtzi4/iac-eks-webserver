@@ -18,7 +18,7 @@ spec:
       serviceAccountName: web-sa
       containers:
         - name: webserver
-          image: <AWS_ECR_REPO>:latest # TODO: add the right repo
+          image: 381492257993.dkr.ecr.us-east-1.amazonaws.com/webserver:latest
           ports:
             - containerPort: 3000
           env:
