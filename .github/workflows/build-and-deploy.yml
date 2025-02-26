@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# Add permissions at the top level
+permissions:
+  contents: write
+
 jobs:
   build-push:
     runs-on: ubuntu-latest
@@ -38,7 +42,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Git config with PAT
+      - name: Set up Git config
         run: |
           git config --global user.email "ci-bot@github.com"
           git config --global user.name "CI Bot"
@@ -50,6 +54,4 @@ jobs:
           sed -i 's|image: .*|image: ${{ secrets.AWS_ECR_REPOSITORY }}:latest|g' kubernetes/deployment.yaml
           git add kubernetes/deployment.yaml
           git diff --quiet kubernetes/deployment.yaml || git commit -m "Update deployment image to latest"
-          git push https://github.com/${{ github.repository }} HEAD:main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          git push https://x-access-token:${{ github.token }}@github.com/${{ github.repository }} HEAD:main
