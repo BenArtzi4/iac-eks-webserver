@@ -14,7 +14,7 @@ The project is hosted in a GitHub repository. The repository includes the follow
 - Node.js Web Application for deployment on EKS.
 - CI/CD pipeline configuration using GitHub Actions to automate Docker image building, pushing to ECR, and updating Kubernetes deployments.
 
-# 2. Infrastructure Setup
+## 2. Infrastructure Setup
 Terraform is used to define the infrastructure:
 - Amazon EKS Cluster: Managed Kubernetes cluster.
 - VPC: Virtual Private Cloud to manage network configuration.
@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 ```
 
-# 4. CI/CD Pipeline with GitHub Actions
+## 4. CI/CD Pipeline with GitHub Actions
 The GitHub Actions workflow automates the build, push, and deployment process for the web server.
 
 ![image](https://github.com/user-attachments/assets/f3cf677a-4e7b-4766-b5b2-80cc81e41ea2)
@@ -56,7 +56,7 @@ The GitHub Actions workflow automates the build, push, and deployment process fo
 - **webserver-555cf55575-rrnbz & webserver-555cf55575-zm24x**: Pod - Running the web server container
 
 
-# 6. Exposing the Web Server
+## 6. Exposing the Web Server
 - The web server is exposed to the internet using a LoadBalancer Service. Once the deployment is completed and the service is available, you can access the web server by visiting the URL provided by the LoadBalancer.
 
 **Key Resources:**
@@ -67,7 +67,7 @@ The GitHub Actions workflow automates the build, push, and deployment process fo
 ## 7. Security
 - AWS Secrets Manager: Credentials for ECR are securely stored in GitHub Secrets and are accessed during the CI/CD pipeline execution.
 
-- 8. Web Server Access
+## 8. Web Server Access
 After successful deployment, the web server should be accessible at an external IP, provided by the AWS Load Balancer.
 
 Webhttp://a15f13353389c4bc2aeb8083a8b7c8ba-230519834.us-east-1.elb.amazonaws.com/
