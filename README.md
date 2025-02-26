@@ -32,13 +32,13 @@ app.get("/", (req, res) => {
 # 4. CI/CD Pipeline with GitHub Actions
 The GitHub Actions workflow automates the build, push, and deployment process for the web server.
 
-- Workflow Structure (build-and-deploy.yml):
-    - Build & Push:
-        - Step 1: Authenticate with AWS and push the Docker image to Amazon ECR.
-        - Step 2: Build the Docker image using the Dockerfile and push it to the ECR repository.
-        - Step 3: Use kubectl to update the Kubernetes deployment with the latest image.
-    - Deploy:
-        - Update Kubernetes Deployment: The pipeline updates the deployment.yaml file in the repository and syncs the changes to Kubernetes using ArgoCD.
+![image](https://github.com/user-attachments/assets/f3cf677a-4e7b-4766-b5b2-80cc81e41ea2)
+
+
+**Workflow:**
+- **build-push**: Builds a Docker image for the web server and pushes it to Amazon ECR (Elastic Container Registry).
+
+- **update-gitops**: Updates the Kubernetes deployment manifest stored in the repository to reflect the latest Docker image pushed to ECR. It ensures that ArgoCD can sync the updated deployment
 
 ## 5. ArgoCD Integration
 - ArgoCD is used to manage the Kubernetes deployment in a GitOps fashion.
