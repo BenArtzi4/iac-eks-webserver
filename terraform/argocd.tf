@@ -10,19 +10,20 @@ provider "helm" {
   }
 }
 
-# Create a namespace for ArgoCD
-resource "kubernetes_namespace" "argocd" {
-  metadata {
-    name = "argocd"
-  }
-}
+# # Ensure ArgoCD Namespace is Created Only After EKS is Ready
+# resource "kubernetes_namespace" "argocd" {
+#   metadata {
+#     name = "argocd"
+#   }
 
-# Install ArgoCD via Helm
+#   depends_on = [aws_eks_node_group.this]  # Ensures worker nodes are ready before running
+# }
+
 resource "helm_release" "argocd" {
   name       = "argocd"
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
-  namespace  = kubernetes_namespace.argocd.metadata[0].name
+  namespace  = "argocd"  # Use existing namespace
 
   set {
     name  = "server.service.type"
